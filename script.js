@@ -1,76 +1,63 @@
+let vagaAcolhimento = null;
+
+function definirVaga(valor) {
+    vagaAcolhimento = valor;
+    alert("Vaga registrada: " + (valor ? "SIM" : "NÃO"));
+}
+
 function mostrarCondicionais() {
-    const q = document.getElementById("queixa").value;
-    const area = document.getElementById("condicionais");
+    const q = queixa.value;
+    const box = document.getElementById("condicionais");
+    box.innerHTML = "";
 
-    area.innerHTML = "";
+    const modelos = {
+        convulsao: `
+            <label>Duração da crise (em segundos):</label>
+            <input id="duracaoConv" type="number">
 
-    const blocos = {
-        malEstar: `
-            <label>Início súbito?</label>
-            <select id="subitoMal">
-                <option value="">Selecione...</option>
+            <label>Primeira crise?</label>
+            <select id="primeiraConv">
+                <option value="">Selecione…</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-            <label>Suor frio associado?</label>
-            <select id="suorFrioMal">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `,
-        tontura: `
-            <label>Duração (minutos)</label>
-            <input id="tempoTontura" type="number">
-            <label>Alteração visual?</label>
-            <select id="visaoTontura">
-                <option value="">Selecione...</option>
+
+            <label>Está rebaixado?</label>
+            <select id="rebaixamento">
+                <option value="">Selecione…</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
         `,
         desmaio: `
-            <label>Houve queda?</label>
-            <select id="quedaDesmaio">
-                <option value="">Selecione...</option>
+            <label>Houve queda com TCE?</label>
+            <select id="tceDesmaio">
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
+
             <label>Perda de consciência prolongada?</label>
             <select id="pCons">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `,
-        convulsao: `
-            <label>Duração da crise (segundos)</label>
-            <input id="duracaoConv" type="number">
-            <label>Primeira crise?</label>
-            <select id="primeiraConv">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `,
-        cefaleia: `
-            <label>Início súbito?</label>
-            <select id="subitoCef">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-            <label>Fotofobia?</label>
-            <select id="fotoCef">
-                <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
         `,
         dorToracica: `
-            <label>Dor irradia para braço ou mandíbula?</label>
+            <label>Irradia para braço ou mandíbula?</label>
             <select id="irradiacao">
-                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Sudorese fria?</label>
+            <select id="suor">
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        `,
+        dispneia: `
+            <label>Início súbito?</label>
+            <select id="subitoDisp">
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
@@ -81,60 +68,107 @@ function mostrarCondicionais() {
         `
     };
 
-    if (blocos[q]) area.innerHTML = blocos[q];
+    if (modelos[q]) box.innerHTML = modelos[q];
 }
 
-function validarSinais() {
-    const t = parseFloat(document.getElementById("temperatura").value);
-    const fc = parseInt(document.getElementById("fc").value);
-    const fr = parseInt(document.getElementById("fr").value);
-    const sp = parseInt(document.getElementById("spo2").value);
-    const pas = parseInt(document.getElementById("pas").value);
+function avaliarQueixa() {
+    const q = queixa.value;
 
-    const alertas = [];
+    if (q === "convulsao") {
+        const dur = Number(document.getElementById("duracaoConv").value || 0);
+        const primeira = document.getElementById("primeiraConv").value;
+        const rebaixado = document.getElementById("rebaixamento").value;
 
-    if (t >= 39) alertas.push("Temperatura muito alta");
-    if (fc > 130) alertas.push("Taquicardia importante");
-    if (fr > 30) alertas.push("Taquipneia");
-    if (sp < 92) alertas.push("Hipoxemia");
-    if (pas < 90) alertas.push("Hipotensão");
+        if (rebaixado === "sim") return "emergencia";
+        if (dur > 30) return "urgencia";
+        if (primeira === "sim") return "urgencia";
+        return "acolhimento";
+    }
 
-    return alertas;
+    if (q === "desmaio") {
+        const tce = document.getElementById("tceDesmaio").value;
+        const longa = document.getElementById("pCons").value;
+
+        if (longa === "sim") return "urgencia";
+        if (tce === "sim") return "urgencia";
+        return "acolhimento";
+    }
+
+    if (q === "dorToracica") {
+        const irr = document.getElementById("irradiacao").value;
+        const suor = document.getElementById("suor").value;
+
+        if (irr === "sim") return "emergencia";
+        if (suor === "sim") return "urgencia";
+        return "acolhimento";
+    }
+
+    if (q === "dispneia") return "urgencia";
+
+    if (q === "hemorragia") return "emergencia";
+
+    if (q === "outro") {
+        const txt = document.getElementById("queixaOutro").value.toLowerCase();
+        const alertas = ["falta de ar", "sangr", "dor no peito", "trauma", "convuls", "queda", "rebaix"];
+        return alertas.some(a => txt.includes(a))
+            ? "urgencia"
+            : "acolhimento";
+    }
+
+    return "acolhimento";
 }
 
-function classificarOutro(desc) {
-    const urg = ["hemorragia", "sangue", "convuls", "dor no peito", "falta de ar", "trauma", "queda", "crise"];
-    const texto = desc.toLowerCase();
-    return urg.some(p => texto.includes(p));
+function avaliarSinaisVitais() {
+    const sp = Number(spo2.value || 100);
+    const pas = Number(pas.value || 120);
+    const fcNum = Number(fc.value || 80);
+    const frNum = Number(fr.value || 18);
+
+    if (sp < 90) return "emergencia";
+    if (pas < 90) return "emergencia";
+    if (fcNum > 150) return "urgencia";
+    if (frNum > 30) return "urgencia";
+    return null;
 }
 
 function gerarResumo() {
-    const prof = document.getElementById("profissional").value;
-    const queixa = document.getElementById("queixa").value;
-    const result = document.getElementById("resultado");
+    const profissional = profissional.value;
+    let riscoQueixa = avaliarQueixa();
+    let riscoSV = avaliarSinaisVitais();
 
-    let texto = `📋 RESUMO DA TRIAGEM\n\n👤 Profissional: ${prof}\n🩺 Queixa: ${queixa}\n`;
+    let riscoFinal = riscoSV || riscoQueixa;
 
-    if (queixa === "outro") {
-        const desc = document.getElementById("queixaOutro").value;
-        texto += `Descrição: ${desc}\n`;
-        texto += `Classificação automática: ${classificarOutro(desc) ? "🚨 POSSÍVEL URGÊNCIA" : "🟢 Não parece urgência"}\n`;
+    let mensagem = "";
+
+    if (riscoFinal === "emergencia") {
+        mensagem = `
+🔴 EMERGÊNCIA
+Atendimento imediato, independente de vaga.
+        `;
+    } else if (riscoFinal === "urgencia") {
+        mensagem = `
+🟠 URGÊNCIA
+Atender mesmo sem vaga no acolhimento.
+        `;
+    } else if (riscoFinal === "acolhimento") {
+        if (vagaAcolhimento === true) {
+            mensagem = `
+🟡 Acolhimento
+Paciente será atendido (há vaga disponível).
+            `;
+        } else if (vagaAcolhimento === false) {
+            mensagem = `
+🟡 Sem sinais de urgência.
+Sem vaga no acolhimento.
+Orientar paciente a retornar mais tarde ou buscar UPA.
+            `;
+        } else {
+            mensagem = `
+🟡 Acolhimento
+Definir antes se há vaga no acolhimento.
+            `;
+        }
     }
 
-    const alertas = validarSinais();
-    const alertaArea = document.getElementById("alertas");
-    alertaArea.innerHTML = "";
-
-    alertas.forEach(a => alertaArea.innerHTML += `<div class="alerta">⚠️ ${a}</div>`);
-
-    texto += `\n📊 Sinais vitais:\n`;
-    texto += `Temperatura: ${temperatura.value}°C\n`;
-    texto += `FC: ${fc.value} bpm\n`;
-    texto += `FR: ${fr.value} irpm\n`;
-    texto += `SpO2: ${spo2.value}%\n`;
-    texto += `PA: ${pas.value}/${pad.value} mmHg\n`;
-
-    texto += `\n⚠️ Alertas clínicos: ${alertas.length ? alertas.join(", ") : "Nenhum"}`;
-
-    result.innerText = texto;
+    resultado.innerText = `Profissional: ${profissional}\n\n${mensagem}`;
 }
