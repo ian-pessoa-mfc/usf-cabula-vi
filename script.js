@@ -1,8 +1,8 @@
-let vagaAcolhimento = null;
+let vaga = null;
 
-function definirVaga(valor) {
-    vagaAcolhimento = valor;
-    alert("Vaga registrada: " + (valor ? "SIM" : "NÃO"));
+function definirVaga(v) {
+    vaga = v;
+    alert("Status da vaga registrado.");
 }
 
 function mostrarCondicionais() {
@@ -12,7 +12,7 @@ function mostrarCondicionais() {
 
     const modelos = {
         convulsao: `
-            <label>Duração da crise (em segundos):</label>
+            <label>Duração da crise (segundos):</label>
             <input id="duracaoConv" type="number">
 
             <label>Primeira crise?</label>
@@ -22,7 +22,7 @@ function mostrarCondicionais() {
                 <option value="nao">Não</option>
             </select>
 
-            <label>Está rebaixado?</label>
+            <label>Rebaixamento de consciência?</label>
             <select id="rebaixamento">
                 <option value="">Selecione…</option>
                 <option value="sim">Sim</option>
@@ -31,36 +31,17 @@ function mostrarCondicionais() {
         `,
         desmaio: `
             <label>Houve queda com TCE?</label>
-            <select id="tceDesmaio">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
+            <select id="tceDesmaio"><option value="sim">Sim</option><option value="nao">Não</option></select>
 
             <label>Perda de consciência prolongada?</label>
-            <select id="pCons">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
+            <select id="pCons"><option value="sim">Sim</option><option value="nao">Não</option></select>
         `,
         dorToracica: `
-            <label>Irradia para braço ou mandíbula?</label>
-            <select id="irradiacao">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
+            <label>Irradiação para braço/mandíbula?</label>
+            <select id="irradiacao"><option value="sim">Sim</option><option value="nao">Não</option></select>
 
             <label>Sudorese fria?</label>
-            <select id="suor">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `,
-        dispneia: `
-            <label>Início súbito?</label>
-            <select id="subitoDisp">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
+            <select id="suor"><option value="sim">Sim</option><option value="nao">Não</option></select>
         `,
         outro: `
             <label>Descreva a queixa:</label>
@@ -71,104 +52,97 @@ function mostrarCondicionais() {
     if (modelos[q]) box.innerHTML = modelos[q];
 }
 
-function avaliarQueixa() {
+function riscoQueixa() {
     const q = queixa.value;
 
     if (q === "convulsao") {
-        const dur = Number(document.getElementById("duracaoConv").value || 0);
-        const primeira = document.getElementById("primeiraConv").value;
-        const rebaixado = document.getElementById("rebaixamento").value;
-
-        if (rebaixado === "sim") return "emergencia";
-        if (dur > 30) return "urgencia";
-        if (primeira === "sim") return "urgencia";
+        if (rebaixamento?.value === "sim") return "emergencia";
+        if (Number(duracaoConv?.value) > 30) return "urgencia";
+        if (primeiraConv?.value === "sim") return "urgencia";
         return "acolhimento";
     }
 
-    if (q === "desmaio") {
-        const tce = document.getElementById("tceDesmaio").value;
-        const longa = document.getElementById("pCons").value;
+    if (q === "hemorragia") return "emergencia";
+    if (q === "dispneia") return "urgencia";
 
-        if (longa === "sim") return "urgencia";
-        if (tce === "sim") return "urgencia";
+    if (q === "desmaio") {
+        if (pCons?.value === "sim") return "urgencia";
+        if (tceDesmaio?.value === "sim") return "urgencia";
         return "acolhimento";
     }
 
     if (q === "dorToracica") {
-        const irr = document.getElementById("irradiacao").value;
-        const suor = document.getElementById("suor").value;
-
-        if (irr === "sim") return "emergencia";
-        if (suor === "sim") return "urgencia";
+        if (irradiacao?.value === "sim") return "emergencia";
+        if (suor?.value === "sim") return "urgencia";
         return "acolhimento";
     }
 
-    if (q === "dispneia") return "urgencia";
-
-    if (q === "hemorragia") return "emergencia";
-
     if (q === "outro") {
-        const txt = document.getElementById("queixaOutro").value.toLowerCase();
-        const alertas = ["falta de ar", "sangr", "dor no peito", "trauma", "convuls", "queda", "rebaix"];
-        return alertas.some(a => txt.includes(a))
-            ? "urgencia"
-            : "acolhimento";
+        const txt = queixaOutro.value.toLowerCase();
+        const risco = ["convuls", "dor no peito", "falta de ar", "sangr", "queda", "trauma", "rebaix"];
+        return risco.some(a => txt.includes(a)) ? "urgencia" : "acolhimento";
     }
 
     return "acolhimento";
 }
 
-function avaliarSinaisVitais() {
+function riscoVitais() {
     const sp = Number(spo2.value || 100);
-    const pas = Number(pas.value || 120);
-    const fcNum = Number(fc.value || 80);
-    const frNum = Number(fr.value || 18);
+    const frN = Number(fr.value || 18);
+    const pasN = Number(pas.value || 120);
+    const fcN = Number(fc.value || 80);
 
     if (sp < 90) return "emergencia";
-    if (pas < 90) return "emergencia";
-    if (fcNum > 150) return "urgencia";
-    if (frNum > 30) return "urgencia";
+    if (pasN < 90) return "emergencia";
+    if (frN > 30) return "urgencia";
+    if (fcN > 150) return "urgencia";
+
     return null;
 }
 
 function gerarResumo() {
-    const profissional = profissional.value;
-    let riscoQueixa = avaliarQueixa();
-    let riscoSV = avaliarSinaisVitais();
+    const rQueixa = riscoQueixa();
+    const rSV = riscoVitais();
+    const risco = rSV || rQueixa;
 
-    let riscoFinal = riscoSV || riscoQueixa;
+    const box = document.getElementById("resultado");
+    box.className = "resultado";
 
-    let mensagem = "";
+    let msg = "";
 
-    if (riscoFinal === "emergencia") {
-        mensagem = `
-🔴 EMERGÊNCIA
-Atendimento imediato, independente de vaga.
-        `;
-    } else if (riscoFinal === "urgencia") {
-        mensagem = `
-🟠 URGÊNCIA
-Atender mesmo sem vaga no acolhimento.
-        `;
-    } else if (riscoFinal === "acolhimento") {
-        if (vagaAcolhimento === true) {
-            mensagem = `
-🟡 Acolhimento
-Paciente será atendido (há vaga disponível).
-            `;
-        } else if (vagaAcolhimento === false) {
-            mensagem = `
-🟡 Sem sinais de urgência.
+    if (risco === "emergencia") {
+        box.classList.add("emergencia");
+        msg = `🔴 EMERGÊNCIA
+Atendimento imediato.
+
+⚠ Coletar sinais vitais assim que clinicamente possível.`;
+    }
+
+    else if (risco === "urgencia") {
+        box.classList.add("urgencia");
+        msg = `🟠 URGÊNCIA
+Atender mesmo sem vaga.
+
+⚠ Coletar sinais vitais assim que possível.`;
+    }
+
+    else {
+        if (vaga === true) {
+            box.classList.add("acolhimento");
+            msg = `🟡 ACOLHIMENTO
+Paciente será atendido (há vaga).`;
+        }
+        else if (vaga === false) {
+            box.classList.add("orientacao");
+            msg = `🟢 Sem sinais de urgência.
 Sem vaga no acolhimento.
-Orientar paciente a retornar mais tarde ou buscar UPA.
-            `;
-        } else {
-            mensagem = `
-🟡 Acolhimento
-Definir antes se há vaga no acolhimento.
-            `;
+Orientar paciente a retornar mais tarde ou buscar UPA.`;
+        }
+        else {
+            box.classList.add("acolhimento");
+            msg = `🟡 Necessário informar se há vaga no acolhimento.`;
         }
     }
 
-    resultado.innerText = `Profissional: ${profissional}\n\n${mensagem}`;
+    box.innerText = msg;
 }
