@@ -3,55 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema de Triagem Avançado</title>
+<title>Triagem - USF Cabula VI</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+<header>
+    <h1>USF Cabula VI</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="about.html">A Unidade</a></li>
+            <li><a href="triagem.html">Triagem</a></li>
+            <li><a href="contact.html">Contato</a></li>
+        </ul>
+    </nav>
+</header>
 
 <div class="container">
 
     <h2>Sistema de Triagem</h2>
 
-    <!-- IDENTIFICAÇÃO DO PROFISSIONAL -->
     <div class="section">
         <h3>Identificação do Profissional</h3>
         <input id="profissional" type="text" placeholder="Nome do profissional">
     </div>
 
-    <!-- QUEIXA PRINCIPAL -->
     <div class="section">
         <h3>Queixa principal</h3>
-
         <select id="queixa" onchange="mostrarCondicionais()">
             <option value="">Selecione...</option>
-
-            <!-- NOVA LISTA EXTENSA  -->
             <option value="malEstar">Mal-estar</option>
             <option value="tontura">Tontura</option>
             <option value="desmaio">Desmaio / Síncope</option>
             <option value="convulsao">Convulsão</option>
-            <option value="cefaleia">Cefaleia / Dor de cabeça</option>
+            <option value="cefaleia">Cefaleia</option>
             <option value="dorToracica">Dor torácica</option>
             <option value="dispneia">Falta de ar</option>
             <option value="febre">Febre</option>
             <option value="vomito">Vômito</option>
             <option value="diarreia">Diarreia</option>
             <option value="dor">Dor inespecífica</option>
-            <option value="trauma">Trauma / Queda / Acidente</option>
-            <option value="hemorragia">Sangramento / Hemorragia</option>
-            <option value="alergia">Alergia / Reação alérgica</option>
-            <option value="gestante">Gestante — queixa relacionada</option>
-            <option value="psiquiatrico">Alteração psiquiátrica / Comportamento</option>
+            <option value="trauma">Trauma</option>
+            <option value="hemorragia">Hemorragia</option>
+            <option value="alergia">Reação alérgica</option>
+            <option value="gestante">Gestante</option>
+            <option value="psiquiatrico">Alteração comportamental</option>
             <option value="hiperglicemia">Hiperglicemia</option>
             <option value="hipoglicemia">Hipoglicemia</option>
-
-            <option value="outro">Outro (digitar)</option>
+            <option value="outro">Outro</option>
         </select>
 
         <div id="condicionais"></div>
     </div>
 
-    <!-- SINAIS VITAIS -->
     <div class="section">
         <h3>Sinais vitais</h3>
 
@@ -72,5 +78,6 @@
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
