@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Triagem – USF Cabula VI</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Sistema de Triagem</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #pergunta {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #opcoes button {
+            display: block;
+            margin: 8px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #resultado {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
+    <h1>Assistente de Triagem</h1>
 
-<header>
-    <h1>USF Cabula VI</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="about.html">A Unidade</a></li>
-            <li><a href="triagem.html">Triagem</a></li>
-            <li><a href="contact.html">Contato</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    
-    <h2>Assistente de Triagem</h2>
-    <p>Responda às perguntas abaixo para definir a conduta adequada.</p>
+    <div id="pergunta"></div>
+    <div id="opcoes"></div>
+    <div id="resultado"></div>
 
-    <div id="triagem-container">
-        <div id="pergunta"></div>
-        <div id="opcoes"></div>
-        <div id="resultado" style="margin-top:20px; font-weight:bold;"></div>
-    </div>
-</main>
-
-<footer>
-    <p>&copy; 2026 USF Cabula VI - Salvador</p>
-</footer>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
