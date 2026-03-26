@@ -1,69 +1,132 @@
-// SISTEMA DE TRIAGEM — VERSÃO ESTÁVEL E FUNCIONAL
+function mostrarCondicionais() {
+    const q = document.getElementById("queixa").value;
+    const area = document.getElementById("condicionais");
 
-const fluxoTriagem = [
-    {
-        pergunta: "O paciente apresenta SINAIS VITAIS CRÍTICOS? (FR<10 ou >30, FC<40 ou >140, PAS<90, SpO2<90%)",
-        opcoes: [
-            { texto: "Sim", resultado: "EMERGÊNCIA! Encaminhar imediatamente para sala vermelha." },
-            { texto: "Não", proximo: 1 }
-        ]
-    },
+    area.innerHTML = "";
 
-    {
-        pergunta: "Há QUEIXAS AGUDAS GRAVES? (dor intensa, sangramento ativo, convulsão, dispneia importante)",
-        opcoes: [
-            { texto: "Sim", resultado: "URGÊNCIA! Atender prontamente na unidade." },
-            { texto: "Não", proximo: 2 }
-        ]
-    },
+    if (q === "febre") {
+        area.innerHTML = `
+            <label>Há quantos dias?</label>
+            <input id="diasFebre" type="number">
 
-    {
-        pergunta: "O serviço necessário está DISPONÍVEL na USF Cabula VI?",
-        opcoes: [
-            { texto: "Sim", resultado: "Atendimento normal. Direcionar para o acolhimento." },
-            { texto: "Não", proximo: 3 }
-        ]
-    },
-
-    {
-        pergunta: "Há necessidade de encaminhamento para UPA, emergência ou especialidade?",
-        opcoes: [
-            { texto: "Sim", resultado: "Encaminhamento necessário. Orientar sobre sinais de alerta." },
-            { texto: "Não", resultado: "Atendimento adequado na Atenção Primária. Registrar no prontuário." }
-        ]
-    }
-];
-
-function mostrarPergunta(i) {
-    const item = fluxoTriagem[i];
-    document.getElementById("pergunta").innerHTML = item.pergunta;
-
-    const opcoesDiv = document.getElementById("opcoes");
-    opcoesDiv.innerHTML = "";
-
-    item.opcoes.forEach(op => {
-        const b = document.createElement("button");
-        b.textContent = op.texto;
-        b.onclick = () => processar(op);
-        opcoesDiv.appendChild(b);
-    });
-
-    document.getElementById("resultado").style.display = "none";
-}
-
-function processar(opcao) {
-    if (opcao.resultado) {
-        const r = document.getElementById("resultado");
-        r.innerHTML = opcao.resultado;
-        r.style.display = "block";
-
-        document.getElementById("pergunta").innerHTML = "";
-        document.getElementById("opcoes").innerHTML = "";
-        return;
+            <label>Tomou antitérmico?</label>
+            <select id="antitermico">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        `;
     }
 
-    mostrarPergunta(opcao.proximo);
+    if (q === "dispneia") {
+        area.innerHTML = `
+            <label>Início súbito?</label>
+            <select id="subito">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Dor torácica associada?</label>
+            <select id="dorToracica">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        `;
+    }
+
+    if (q === "vomito") {
+        area.innerHTML = `
+            <label>Quantidade de episódios?</label>
+            <input id="episodiosVomito" type="number">
+
+            <label>Há sinais de desidratação?</label>
+            <select id="desidratacaoVomito">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        `;
+    }
+
+    if (q === "diarreia") {
+        area.innerHTML = `
+            <label>Duração (dias)</label>
+            <input id="duracaoDiarreia" type="number">
+
+            <label>Muco ou sangue?</label>
+            <select id="mucoSangue">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        `;
+    }
+
+    if (q === "dor") {
+        area.innerHTML = `
+            <label>Local da dor</label>
+            <input id="localDor" type="text">
+
+            <label>Intensidade (0 a 10)</label>
+            <input id="intensidadeDor" type="number" min="0" max="10">
+        `;
+    }
 }
 
-// Iniciar fluxo
-mostrarPergunta(0);
+function validarSinais() {
+    const t = parseFloat(document.getElementById("temperatura").value);
+    const fc = parseInt(document.getElementById("fc").value);
+    const fr = parseInt(document.getElementById("fr").value);
+    const sp = parseInt(document.getElementById("spo2").value);
+    const pas = parseInt(document.getElementById("pas").value);
+    const pad = parseInt(document.getElementById("pad").value);
+
+    const alertas = [];
+
+    if (t >= 39) alertas.push("⚠️ Temperatura muito alta");
+    if (fc > 130) alertas.push("⚠️ Taquicardia importante");
+    if (fr > 30) alertas.push("⚠️ Taquipneia");
+    if (sp < 92) alertas.push("⚠️ Hipoxemia");
+    if (pas < 90) alertas.push("⚠️ Hipotensão");
+
+    return alertas;
+}
+
+function gerarResumo() {
+    const profissional = document.getElementById("profissional").value;
+    const queixa = document.getElementById("queixa").value;
+
+    let texto = "📋 RESUMO DA TRIAGEM\n\n";
+    texto += `👤 Profissional: ${profissional}\n`;
+    texto += `🩺 Queixa principal: ${queixa}\n`;
+
+    const alertas = validarSinais();
+    const alertaArea = document.getElementById("alertas");
+
+    alertaArea.innerHTML = "";
+    if (alertas.length > 0) {
+        alertas.forEach(a => {
+            alertaArea.innerHTML += `<div class="alerta">${a}</div>`;
+        });
+    }
+
+    const t = document.getElementById("temperatura").value;
+    const fc = document.getElementById("fc").value;
+    const fr = document.getElementById("fr").value;
+    const sp = document.getElementById("spo2").value;
+    const pas = document.getElementById("pas").value;
+    const pad = document.getElementById("pad").value;
+
+    texto += `\n📊 Sinais vitais:\n`;
+    texto += `Temperatura: ${t}°C\n`;
+    texto += `FC: ${fc} bpm\n`;
+    texto += `FR: ${fr} irpm\n`;
+    texto += `SpO2: ${sp}%\n`;
+    texto += `PA: ${pas}/${pad} mmHg\n`;
+
+    texto += `\n⚠️ Alertas clínicos: ${alertas.length > 0 ? alertas.join(", ") : "Nenhum"}\n`;
+
+    document.getElementById("resultado").innerText = texto;
+}
