@@ -1,23 +1,24 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #eef3f7;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #1457ff;
+    background-color: #005c9e;
     color: white;
     padding: 15px;
 }
 
 header h1 {
     margin: 0;
+    font-size: 22px;
 }
 
 nav ul {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     padding: 0;
     margin: 10px 0 0;
     list-style: none;
@@ -25,74 +26,102 @@ nav ul {
 
 nav a {
     color: white;
-    text-decoration: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
 nav a:hover {
     text-decoration: underline;
 }
 
-main {
+main, .container {
     padding: 20px;
 }
 
-footer {
-    margin-top: 40px;
-    background: #e9e9e9;
-    padding: 15px;
-    text-align: center;
-}
-
-/* ÁREA DA TRIAGEM */
 .container {
-    background: #fff;
-    padding: 30px;
-    max-width: 650px;
+    background: white;
+    max-width: 700px;
     margin: 20px auto;
-    border-radius: 8px;
-    box-shadow: 0 0 15px #00000020;
+    border-radius: 6px;
+    box-shadow: 0 0 8px #00000022;
 }
 
 .section {
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 input, select, textarea {
     width: 100%;
-    margin-top: 8px;
-    margin-bottom: 12px;
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #bbb;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #a9a9a9;
+    border-radius: 4px;
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background: #1457ff;
-    border: none;
-    border-radius: 5px;
+    background: #005c9e;
     color: white;
-    font-weight: bold;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button:hover {
-    background: #003ccc;
+    background: #004b84;
 }
 
 .alerta {
-    padding: 10px;
-    margin-top: 8px;
-    color: #8b0000;
     font-weight: bold;
+    color: #8b0000;
+    margin-top: 6px;
 }
 
 .resultado {
-    background: #eef4ff;
-    padding: 20px;
-    margin-top: 25px;
-    border-radius: 6px;
+    background: #e5f0ff;
+    padding: 15px;
     white-space: pre-line;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.status-emergencia {
+    background-color: #ffb3b3;
+    padding: 10px;
+    border-left: 6px solid red;
+}
+
+.status-urgencia {
+    background-color: #ffe0a8;
+    padding: 10px;
+    border-left: 6px solid orange;
+}
+
+.status-acolhimento {
+    background-color: #fff9c4;
+    padding: 10px;
+    border-left: 6px solid #d4c200;
+}
+
+.status-orientacao {
+    background-color: #d1ffd6;
+    padding: 10px;
+    border-left: 6px solid #1b8f24;
+}
+
+.vaga-box {
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 12px;
+    background: #e7e7e7;
 }
