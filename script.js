@@ -4,161 +4,84 @@ function mostrarCondicionais() {
 
     area.innerHTML = "";
 
-    if (q === "malEstar") {
-        area.innerHTML = `
+    const blocos = {
+        malEstar: `
             <label>Início súbito?</label>
             <select id="subitoMal">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-            
-            <label>Acompanhado de suor frio?</label>
+            <label>Suor frio associado?</label>
             <select id="suorFrioMal">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-        `;
-    }
-
-    if (q === "tontura") {
-        area.innerHTML = `
-            <label>Há quanto tempo?</label>
+        `,
+        tontura: `
+            <label>Duração (minutos)</label>
             <input id="tempoTontura" type="number">
-
             <label>Alteração visual?</label>
             <select id="visaoTontura">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-        `;
-    }
-
-    if (q === "desmaio") {
-        area.innerHTML = `
-            <label>Teve perda de consciência?</label>
+        `,
+        desmaio: `
+            <label>Houve queda?</label>
+            <select id="quedaDesmaio">
+                <option value="">Selecione...</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            <label>Perda de consciência prolongada?</label>
             <select id="pCons">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-
-            <label>Bateu a cabeça?</label>
-            <select id="bateuCabeca">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `;
-    }
-
-    if (q === "convulsao") {
-        area.innerHTML = `
+        `,
+        convulsao: `
             <label>Duração da crise (segundos)</label>
             <input id="duracaoConv" type="number">
-
-            <label>Já apresentou crises antes?</label>
-            <select id="historicoConv">
+            <label>Primeira crise?</label>
+            <select id="primeiraConv">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-        `;
-    }
-
-    if (q === "cefaleia") {
-        area.innerHTML = `
+        `,
+        cefaleia: `
             <label>Início súbito?</label>
             <select id="subitoCef">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-
             <label>Fotofobia?</label>
             <select id="fotoCef">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-        `;
-    }
-
-    if (q === "dorToracica") {
-        area.innerHTML = `
-            <label>Irradiação para braço ou mandíbula?</label>
+        `,
+        dorToracica: `
+            <label>Dor irradia para braço ou mandíbula?</label>
             <select id="irradiacao">
                 <option value="">Selecione...</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
-        `;
-    }
-
-    if (q === "dispneia") {
-        area.innerHTML = `
-            <label>Início súbito?</label>
-            <select id="subitoDisp">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-
-            <label>Dor torácica associada?</label>
-            <select id="dorToracicaDisp">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `;
-    }
-
-    if (q === "vomito") {
-        area.innerHTML = `
-            <label>Quantidade de episódios?</label>
-            <input id="episodiosVomito" type="number">
-
-            <label>Há sinais de desidratação?</label>
-            <select id="desidratacaoVomito">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `;
-    }
-
-    if (q === "diarreia") {
-        area.innerHTML = `
-            <label>Duração (dias)</label>
-            <input id="duracaoDiarreia" type="number">
-
-            <label>Muco ou sangue?</label>
-            <select id="mucoSangue">
-                <option value="">Selecione...</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        `;
-    }
-
-    if (q === "dor") {
-        area.innerHTML = `
-            <label>Local da dor</label>
-            <input id="localDor" type="text">
-
-            <label>Intensidade (0 a 10)</label>
-            <input id="intensidadeDor" type="number" min="0" max="10">
-        `;
-    }
-
-    if (q === "outro") {
-        area.innerHTML = `
+        `,
+        outro: `
             <label>Descreva a queixa:</label>
-            <input id="queixaOutro" type="text" placeholder="Descrever...">
-        `;
-    }
+            <input id="queixaOutro" type="text">
+        `
+    };
+
+    if (blocos[q]) area.innerHTML = blocos[q];
 }
 
 function validarSinais() {
@@ -179,55 +102,39 @@ function validarSinais() {
     return alertas;
 }
 
-function classificarOutro(descricao) {
-    const palavrasUrg = [
-        "dor no peito", "sangramento", "convulsão", "falta de ar",
-        "inconsciência", "desmaio", "queda", "batida", "trauma",
-        "parada", "crise", "alergia", "choque", "torácica"
-    ];
-
-    const texto = descricao.toLowerCase();
-
-    for (let p of palavrasUrg) {
-        if (texto.includes(p)) return true;
-    }
-
-    return false;
+function classificarOutro(desc) {
+    const urg = ["hemorragia", "sangue", "convuls", "dor no peito", "falta de ar", "trauma", "queda", "crise"];
+    const texto = desc.toLowerCase();
+    return urg.some(p => texto.includes(p));
 }
 
 function gerarResumo() {
-    const profissional = document.getElementById("profissional").value;
+    const prof = document.getElementById("profissional").value;
     const queixa = document.getElementById("queixa").value;
+    const result = document.getElementById("resultado");
 
-    let texto = "📋 RESUMO DA TRIAGEM\n\n";
-    texto += `👤 Profissional: ${profissional}\n`;
-    texto += `🩺 Queixa principal: ${queixa}\n`;
+    let texto = `📋 RESUMO DA TRIAGEM\n\n👤 Profissional: ${prof}\n🩺 Queixa: ${queixa}\n`;
 
     if (queixa === "outro") {
         const desc = document.getElementById("queixaOutro").value;
-        const urgente = classificarOutro(desc);
         texto += `Descrição: ${desc}\n`;
-        texto += `Classificação automática: ${urgente ? "🚨 POSSÍVEL URGÊNCIA" : "🟢 Pouco sugestivo de urgência"}\n`;
+        texto += `Classificação automática: ${classificarOutro(desc) ? "🚨 POSSÍVEL URGÊNCIA" : "🟢 Não parece urgência"}\n`;
     }
 
     const alertas = validarSinais();
     const alertaArea = document.getElementById("alertas");
     alertaArea.innerHTML = "";
 
-    if (alertas.length > 0) {
-        alertas.forEach(a => {
-            alertaArea.innerHTML += `<div class="alerta">⚠️ ${a}</div>`;
-        });
-    }
+    alertas.forEach(a => alertaArea.innerHTML += `<div class="alerta">⚠️ ${a}</div>`);
 
-    texto += "\n📊 Sinais vitais:\n";
-    texto += `Temperatura: ${document.getElementById("temperatura").value}°C\n`;
-    texto += `FC: ${document.getElementById("fc").value} bpm\n`;
-    texto += `FR: ${document.getElementById("fr").value} irpm\n`;
-    texto += `SpO2: ${document.getElementById("spo2").value}%\n`;
-    texto += `PA: ${document.getElementById("pas").value}/${document.getElementById("pad").value} mmHg\n`;
+    texto += `\n📊 Sinais vitais:\n`;
+    texto += `Temperatura: ${temperatura.value}°C\n`;
+    texto += `FC: ${fc.value} bpm\n`;
+    texto += `FR: ${fr.value} irpm\n`;
+    texto += `SpO2: ${spo2.value}%\n`;
+    texto += `PA: ${pas.value}/${pad.value} mmHg\n`;
 
-    texto += `\n⚠️ Alertas clínicos: ${alertas.length > 0 ? alertas.join(", ") : "Nenhum"}`;
+    texto += `\n⚠️ Alertas clínicos: ${alertas.length ? alertas.join(", ") : "Nenhum"}`;
 
-    document.getElementById("resultado").innerText = texto;
+    result.innerText = texto;
 }
