@@ -1,72 +1,60 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
-    background: #f4f6f9;
-    color: #333;
-}
-
-header {
-    background: #0066aa;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-}
-
-nav ul {
-    list-style: none;
-    margin: 1rem 0 0;
-    padding: 0;
+    padding: 25px;
     display: flex;
     justify-content: center;
-    gap: 2rem;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
+.container {
+    background: #fff;
+    padding: 30px;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #00000020;
 }
 
-.hero {
-    background: #e8f4ff;
-    padding: 2rem;
-    text-align: center;
+.section {
+    margin-bottom: 25px;
 }
 
-.services ul {
-    text-align: left;
-    max-width: 400px;
-    margin: auto;
-}
-
-main {
-    padding: 2rem;
-}
-
-footer {
-    text-align: center;
-    background: #0066aa;
-    color: white;
-    padding: 1rem;
-    margin-top: 2rem;
-}
-
-form {
-    max-width: 400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+input, select {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
 }
 
 button {
-    background: #0066aa;
-    color: white;
-    padding: .7rem;
+    width: 100%;
+    padding: 12px;
+    background: #1457ff;
     border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
     cursor: pointer;
-    margin-top: 1rem;
 }
 
 button:hover {
-    background: #004f82;
+    background: #003ccc;
+}
+
+.alerta {
+    padding: 10px;
+    margin-top: 8px;
+    color: #8b0000;
+    font-weight: bold;
+}
+
+.resultado {
+    background: #eef4ff;
+    padding: 20px;
+    margin-top: 25px;
+    border-radius: 6px;
+    white-space: pre-line;
 }
