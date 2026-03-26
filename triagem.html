@@ -10,7 +10,7 @@
 <body>
 
 <header>
-    <h1>USF Cabula VI</h1>
+    USF Cabula VI
     <nav>
         <ul>
             <li><a href="index.html">Início</a></li>
@@ -23,15 +23,15 @@
 
 <div class="container">
 
-    <h2>Sistema de Triagem</h2>
+    <h2 class="section-title">Sistema de Triagem</h2>
 
     <div class="section">
-        <h3>Identificação do Profissional</h3>
-        <input id="profissional" type="text" placeholder="Nome do profissional">
+        <label class="section-title">Profissional</label>
+        <input id="profissional" type="text" placeholder="Seu nome">
     </div>
 
     <div class="section">
-        <h3>Queixa principal</h3>
+        <label class="section-title">Queixa principal</label>
         <select id="queixa" onchange="mostrarCondicionais()">
             <option value="">Selecione...</option>
 
@@ -39,20 +39,18 @@
             <option value="desmaio">Desmaio / Síncope</option>
             <option value="dorToracica">Dor torácica</option>
             <option value="dispneia">Falta de ar</option>
-            <option value="hemorragia">Hemorragia / Sangramento</option>
+            <option value="hemorragia">Hemorragia</option>
 
             <option value="febre">Febre</option>
             <option value="vomito">Vômito</option>
             <option value="diarreia">Diarreia</option>
-            <option value="cefaleia">Cefaleia / Dor de cabeça</option>
+            <option value="cefaleia">Cefaleia</option>
             <option value="tontura">Tontura</option>
             <option value="malEstar">Mal-estar</option>
             <option value="dor">Dor inespecífica</option>
 
-            <option value="trauma">Trauma / Queda</option>
-            <option value="alergia">Alergia / Reação alérgica</option>
-            <option value="gestante">Gestante (queixa clínica)</option>
-            <option value="psiquiatrico">Alteração comportamental</option>
+            <option value="trauma">Trauma</option>
+            <option value="alergia">Alergia</option>
             <option value="hiperglicemia">Hiperglicemia</option>
             <option value="hipoglicemia">Hipoglicemia</option>
 
@@ -63,25 +61,21 @@
     </div>
 
     <div class="section">
-        <h3>Sinais vitais</h3>
+        <label class="section-title">Sinais vitais</label>
 
-        <input id="temperatura" type="number" step="0.1" placeholder="Temperatura (°C)">
         <input id="fc" type="number" placeholder="Frequência cardíaca">
         <input id="fr" type="number" placeholder="Frequência respiratória">
         <input id="spo2" type="number" placeholder="SpO2 (%)">
         <input id="pas" type="number" placeholder="Pressão sistólica">
         <input id="pad" type="number" placeholder="Pressão diastólica">
-
-        <div id="alertas"></div>
     </div>
 
-    <div class="vaga-box">
-        <p>Há vaga no acolhimento?</p>
-        <button onclick="definirVaga(true)">SIM</button>
-        <button onclick="definirVaga(false)">NÃO</button>
+    <div class="vaga-buttons">
+        <button onclick="definirVaga(true)">Há vaga no acolhimento</button>
+        <button onclick="definirVaga(false)">Não há vaga</button>
     </div>
 
-    <button onclick="gerarResumo()">Gerar Classificação</button>
+    <button onclick="gerarResumo()">Gerar classificação</button>
 
     <div id="resultado" class="resultado"></div>
 
